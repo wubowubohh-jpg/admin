@@ -10,6 +10,7 @@ import { Dialog, DialogScrollContent, DialogHeader, DialogTitle } from '@/compon
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import TableSkeleton from '@/components/TableSkeleton.vue'
 import ListPagination from '@/components/ListPagination.vue'
+import { useListRefresh, type ListFetchOptions } from '@/composables/useListRefresh'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { notifyError, notifySuccess } from '@/utils/notify'
@@ -17,6 +18,7 @@ import ComplianceGuardWrapper from '@/components/ComplianceGuardWrapper.vue'
 
 const { t } = useI18n()
 const loading = ref(true)
+const { refreshing, refreshList } = useListRefresh()
 const jobs = ref<(AdminReconciliationJob & Record<string, unknown>)[]>([])
 const pagination = reactive({
   page: 1,
@@ -90,8 +92,8 @@ const resolveItemId = ref<number | null>(null)
 const resolveRemark = ref('')
 const resolving = ref(false)
 
-const fetchJobs = async (page = 1) => {
-  loading.value = true
+const fetchJobs = async (page = 1, options: ListFetchOptions = {}) => {
+  if (!options.preserveRows) loading.value = true
   try {
     const params: Record<string, unknown> = { page, page_size: pagination.page_size }
     if (filters.status && filters.status !== '__all__') params.status = filters.status
@@ -108,9 +110,9 @@ const fetchJobs = async (page = 1) => {
       pagination.total_page = p.total_page
     }
   } catch {
-    jobs.value = []
+    if (!options.preserveRows) jobs.value = []
   } finally {
-    loading.value = false
+    if (!options.preserveRows) loading.value = false
   }
 }
 
@@ -127,8 +129,8 @@ const changePageSize = (size: number) => {
   fetchJobs(1)
 }
 
-const handleSearch = () => {
-  fetchJobs(1)
+const refresh = () => {
+  refreshList(() => fetchJobs(1, { preserveRows: true }))
 }
 
 const handleNewJob = async () => {
@@ -304,7 +306,7 @@ onMounted(() => {
           </SelectContent>
         </Select>
       </div>
-      <Button size="sm" class="h-9 w-full sm:w-auto" @click="handleSearch">{{ t('admin.common.refresh') }}</Button>
+      <Button size="sm" class="h-9 w-full sm:w-auto" :disabled="refreshing" @click="refresh">{{ t('admin.common.refresh') }}</Button>
     </div>
 
     <!-- Table -->

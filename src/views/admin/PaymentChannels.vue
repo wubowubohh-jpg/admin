@@ -10,12 +10,14 @@ import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import TableSkeleton from '@/components/TableSkeleton.vue'
 import ListPagination from '@/components/ListPagination.vue'
+import { useListRefresh, type ListFetchOptions } from '@/composables/useListRefresh'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { confirmAction } from '@/utils/confirm'
 import PaymentChannelModal from './components/PaymentChannelModal.vue'
 import ComplianceGuardWrapper from '@/components/ComplianceGuardWrapper.vue'
 
 const loading = ref(true)
+const { refreshing, refreshList } = useListRefresh()
 const channels = ref<AdminPaymentChannel[]>([])
 const pagination = ref({
   page: 1,
@@ -34,8 +36,8 @@ const showModal = ref(false)
 const editingId = ref<number | null>(null)
 const { t } = useI18n()
 
-const fetchChannels = async (page = 1) => {
-  loading.value = true
+const fetchChannels = async (page = 1, options: ListFetchOptions = {}) => {
+  if (!options.preserveRows) loading.value = true
   try {
     const response = await adminAPI.getPaymentChannels({
       page,
@@ -46,9 +48,9 @@ const fetchChannels = async (page = 1) => {
     channels.value = response.data.data || []
     pagination.value = response.data.pagination || pagination.value
   } catch (error) {
-    channels.value = []
+    if (!options.preserveRows) channels.value = []
   } finally {
-    loading.value = false
+    if (!options.preserveRows) loading.value = false
   }
 }
 
@@ -57,7 +59,7 @@ const handleSearch = () => {
 }
 
 const refresh = () => {
-  fetchChannels(pagination.value.page)
+  refreshList(() => fetchChannels(pagination.value.page, { preserveRows: true }))
 }
 
 const changePage = (page: number) => {
@@ -239,7 +241,7 @@ watch(
           </Select>
         </div>
         <div class="hidden flex-1 sm:block"></div>
-        <Button size="sm" variant="outline" class="w-full sm:w-auto" @click="refresh">{{ t('admin.common.refresh') }}</Button>
+        <Button size="sm" variant="outline" class="w-full sm:w-auto" :disabled="refreshing" @click="refresh">{{ t('admin.common.refresh') }}</Button>
       </div>
     </div>
 

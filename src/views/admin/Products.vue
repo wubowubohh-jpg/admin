@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { notifyError, notifySuccess } from '@/utils/notify'
 import TableSkeleton from '@/components/TableSkeleton.vue'
 import ListPagination from '@/components/ListPagination.vue'
+import type { ListFetchOptions } from '@/composables/useListRefresh'
 import { confirmAction } from '@/utils/confirm'
 import ProductEditModal from './components/ProductEditModal.vue'
 import { buildAdminCategoryPath, createAdminCategoryMap, createAdminCategoryChildCountMap, flattenAdminCategories, isAdminProductCategorySelectable } from '@/utils/category'
@@ -199,8 +200,8 @@ const autoStockBadgeClass = (product: AdminProduct) => {
   return 'border-emerald-200 bg-emerald-50 text-emerald-700'
 }
 
-const fetchProducts = async () => {
-  loading.value = true
+const fetchProducts = async (options: ListFetchOptions = {}) => {
+  if (!options.preserveRows) loading.value = true
   selectedIds.value = new Set()
   try {
     const res = await adminAPI.getProducts({
@@ -214,9 +215,9 @@ const fetchProducts = async () => {
       Object.assign(pagination, res.data.pagination)
     }
   } catch (err) {
-    products.value = []
+    if (!options.preserveRows) products.value = []
   } finally {
-    loading.value = false
+    if (!options.preserveRows) loading.value = false
   }
 }
 
@@ -266,7 +267,7 @@ const resetFilters = () => {
   searchQuery.value = ''
   stockStatus.value = 'all'
   pagination.page = 1
-  fetchProducts()
+  fetchProducts({ preserveRows: true })
   nextTick(() => {
     const input = document.getElementById('admin-products-search') as HTMLInputElement | null
     input?.focus()
