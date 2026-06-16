@@ -959,3 +959,81 @@ export interface AdminResellerWithdraw {
   updated_at: string
   profile?: AdminResellerProfileRef
 }
+
+export interface AdminResellerOperationsAlert {
+  type: string
+  level: string
+  value: number
+}
+
+export interface AdminResellerOperationsOverview {
+  range: string
+  from: string
+  to: string
+  timezone: string
+  lifecycle: {
+    profiles_total: number
+    profiles_pending_review: number
+    profiles_active: number
+    profiles_rejected: number
+    profiles_disabled: number
+    profiles_settlement_frozen: number
+    domains_total: number
+    domains_pending_review: number
+    domains_active: number
+    domains_disabled: number
+    domains_pending_verification: number
+    domains_verified: number
+    custom_domains: number
+    subdomains: number
+    site_configs_total: number
+    active_profiles_without_site_config: number
+  }
+  orders: {
+    orders_total: number
+    paid_orders: number
+    completed_orders: number
+    refunded_orders: number
+    self_dealing_blocked_orders: number
+    active_resellers_with_orders: number
+    average_paid_orders_per_active_reseller: string
+  }
+  top_resellers: Array<{
+    reseller_id: number
+    user_id: number
+    email?: string
+    display_name?: string
+    orders_total: number
+    paid_orders: number
+    active_domains: number
+    site_configured: boolean
+    last_order_at?: string
+  }>
+  alerts: AdminResellerOperationsAlert[]
+}
+
+export interface AdminResellerOperationsFinance {
+  range: string
+  from: string
+  to: string
+  timezone: string
+  period_currency_rows: Array<{
+    currency: string
+    orders_total: number
+    paid_orders: number
+    gmv_paid: string
+    profit_earned: string
+    refund_deducted: string
+    withdraw_paid: string
+  }>
+  current_currency_rows: Array<{
+    currency: string
+    available_balance: string
+    locked_balance: string
+    negative_balance: string
+    pending_withdraw_count: number
+    pending_withdraw_amount: string
+    negative_balance_accounts: number
+    frozen_balance_accounts: number
+  }>
+}

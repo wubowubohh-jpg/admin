@@ -209,6 +209,12 @@ const routes = [
         meta: { permission: 'GET:/admin/affiliates/withdraws' },
       },
       {
+        path: 'resellers/operations',
+        name: 'resellers-operations',
+        component: () => import('@/views/admin/ResellerOperationsDashboard.vue'),
+        meta: { permission: 'GET:/admin/resellers/operations/overview' },
+      },
+      {
         path: 'resellers/profiles',
         name: 'resellers-profiles',
         component: () => import('@/views/admin/ResellerProfiles.vue'),
