@@ -396,6 +396,18 @@ const navGroups = computed<NavGroup[]>(() => {
       icon: Users,
       items: [
         {
+          label: t('admin.navItems.resellerProfiles'),
+          to: '/resellers/profiles',
+          icon: Users,
+          permission: 'GET:/admin/resellers/profiles',
+        },
+        {
+          label: t('admin.navItems.resellerDomains'),
+          to: '/resellers/domains',
+          icon: Link,
+          permission: 'GET:/admin/resellers/domains',
+        },
+        {
           label: t('admin.navItems.resellerLedgerEntries'),
           to: '/resellers/ledger-entries',
           icon: ReceiptText,

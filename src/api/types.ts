@@ -801,6 +801,46 @@ export interface AdminResellerProfileRef {
   user?: AdminResellerUser
 }
 
+export interface AdminResellerProfile {
+  id: number
+  user_id: number
+  status: string
+  apply_reason?: string
+  reject_reason?: string
+  default_markup_percent: string
+  max_markup_percent: string
+  settlement_status: string
+  reviewed_by?: number
+  reviewed_at?: string
+  created_at: string
+  updated_at: string
+  user?: AdminResellerUser
+}
+
+export interface AdminResellerDomain {
+  id: number
+  reseller_id: number
+  domain: string
+  type: string
+  verification_token?: string
+  verification_status: string
+  status: string
+  is_primary: boolean
+  verified_at?: string
+  created_at: string
+  updated_at: string
+  profile?: AdminResellerProfileRef
+}
+
+export interface AdminResellerProfileApprovePayload {
+  default_markup_percent?: string
+  max_markup_percent?: string
+}
+
+export interface AdminResellerReasonPayload {
+  reason?: string
+}
+
 export interface AdminResellerOrderRef {
   id: number
   order_no: string

@@ -4,6 +4,23 @@ export const RESELLER_LEDGER_TYPE_MANUAL_ADJUST = 'manual_adjust'
 export const RESELLER_LEDGER_TYPE_WITHDRAW_LOCK = 'withdraw_lock'
 export const RESELLER_LEDGER_TYPE_WITHDRAW_PAID = 'withdraw_paid'
 
+export const RESELLER_PROFILE_STATUS_PENDING_REVIEW = 'pending_review'
+export const RESELLER_PROFILE_STATUS_ACTIVE = 'active'
+export const RESELLER_PROFILE_STATUS_REJECTED = 'rejected'
+export const RESELLER_PROFILE_STATUS_DISABLED = 'disabled'
+
+export const RESELLER_SETTLEMENT_STATUS_NORMAL = 'normal'
+export const RESELLER_SETTLEMENT_STATUS_FROZEN = 'frozen'
+
+export const RESELLER_DOMAIN_TYPE_SUBDOMAIN = 'subdomain'
+export const RESELLER_DOMAIN_TYPE_CUSTOM = 'custom'
+export const RESELLER_DOMAIN_STATUS_PENDING_REVIEW = 'pending_review'
+export const RESELLER_DOMAIN_STATUS_ACTIVE = 'active'
+export const RESELLER_DOMAIN_STATUS_DISABLED = 'disabled'
+export const RESELLER_DOMAIN_VERIFICATION_PENDING = 'pending'
+export const RESELLER_DOMAIN_VERIFICATION_VERIFIED = 'verified'
+export const RESELLER_DOMAIN_VERIFICATION_FAILED = 'failed'
+
 export const RESELLER_LEDGER_STATUS_PENDING_CONFIRM = 'pending_confirm'
 export const RESELLER_LEDGER_STATUS_AVAILABLE = 'available'
 export const RESELLER_LEDGER_STATUS_LOCKED = 'locked'

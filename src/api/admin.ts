@@ -14,6 +14,8 @@ import type {
   AdminPaymentChannel,
   AdminUser,
   AdminSiteConnection,
+  AdminResellerProfileApprovePayload,
+  AdminResellerReasonPayload,
 } from './types'
 
 export interface CaptchaPayload {
@@ -430,6 +432,22 @@ export const adminAPI = {
     api.post(`/admin/resellers/withdraws/${id}/reject`, data),
   payResellerWithdraw: (id: number) =>
     api.post(`/admin/resellers/withdraws/${id}/pay`, {}),
+  getResellerProfiles: (params?: Record<string, unknown>) =>
+    api.get('/admin/resellers/profiles', { params }),
+  approveResellerProfile: (id: number, data: AdminResellerProfileApprovePayload) =>
+    api.post(`/admin/resellers/profiles/${id}/approve`, data),
+  rejectResellerProfile: (id: number, data: AdminResellerReasonPayload) =>
+    api.post(`/admin/resellers/profiles/${id}/reject`, data),
+  disableResellerProfile: (id: number, data: AdminResellerReasonPayload) =>
+    api.post(`/admin/resellers/profiles/${id}/disable`, data),
+  restoreResellerProfile: (id: number) =>
+    api.post(`/admin/resellers/profiles/${id}/restore`, {}),
+  getResellerDomains: (params?: Record<string, unknown>) =>
+    api.get('/admin/resellers/domains', { params }),
+  approveResellerDomain: (id: number) =>
+    api.post(`/admin/resellers/domains/${id}/approve`, {}),
+  disableResellerDomain: (id: number) =>
+    api.post(`/admin/resellers/domains/${id}/disable`, {}),
   refundOrderToWallet: (id: number, data: AdminRefundToWalletPayload) =>
     api.post(`/admin/orders/${id}/refund-to-wallet`, data),
   manualRefundOrder: (id: number, data: AdminManualRefundPayload) =>
