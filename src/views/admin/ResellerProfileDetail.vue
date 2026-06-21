@@ -25,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { confirmAction } from '@/utils/confirm'
 import { formatDate, formatMoney, getLocalizedText } from '@/utils/format'
+import { getImageUrl } from '@/utils/image'
 import { notifyError, notifySuccess } from '@/utils/notify'
 import { getResellerProfileStatusKey } from '@/utils/resellerManagement'
 
@@ -426,9 +427,23 @@ onMounted(fetchDetail)
         <TabsContent value="site" class="mt-0">
           <div class="rounded-xl border border-border bg-card p-4">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <div class="text-sm font-medium">{{ detail.site_config?.site_name || '未配置站点名称' }}</div>
-                <p class="mt-1 text-sm text-muted-foreground">Logo: {{ detail.site_config?.logo || '-' }}</p>
+              <div class="flex items-center gap-3">
+                <img
+                  v-if="detail.site_config?.logo"
+                  :src="getImageUrl(detail.site_config.logo)"
+                  class="h-12 w-12 shrink-0 rounded-lg border border-border bg-muted/30 object-contain"
+                  alt="Logo"
+                />
+                <div
+                  v-else
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-dashed border-border bg-muted/30 text-[10px] text-muted-foreground"
+                >
+                  无 Logo
+                </div>
+                <div>
+                  <div class="text-sm font-medium">{{ detail.site_config?.site_name || '未配置站点名称' }}</div>
+                  <p class="mt-1 text-xs text-muted-foreground">分销商站点品牌信息</p>
+                </div>
               </div>
               <Button as="a" variant="outline" :href="siteConfigLink">打开站点配置</Button>
             </div>

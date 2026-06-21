@@ -10,6 +10,7 @@ import type {
   AdminResellerSiteConfigPayload,
 } from '@/api/types'
 import IdCell from '@/components/IdCell.vue'
+import MediaPicker from '@/components/admin/MediaPicker.vue'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogScrollContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
@@ -384,16 +385,12 @@ onMounted(() => {
                 <span class="text-sm text-foreground">{{ item.site_name || '-' }}</span>
               </TableCell>
               <TableCell class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <img v-if="item.logo" :src="getImageUrl(item.logo)" class="h-8 w-8 rounded border border-border object-contain" alt="" />
-                  <span class="max-w-[120px] truncate text-xs text-muted-foreground">{{ item.logo || '-' }}</span>
-                </div>
+                <img v-if="item.logo" :src="getImageUrl(item.logo)" class="h-9 w-9 rounded border border-border bg-muted/30 object-contain" alt="logo" />
+                <span v-else class="text-xs text-muted-foreground">-</span>
               </TableCell>
               <TableCell class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <img v-if="item.favicon" :src="getImageUrl(item.favicon)" class="h-8 w-8 rounded border border-border object-contain" alt="" />
-                  <span class="max-w-[120px] truncate text-xs text-muted-foreground">{{ item.favicon || '-' }}</span>
-                </div>
+                <img v-if="item.favicon" :src="getImageUrl(item.favicon)" class="h-9 w-9 rounded border border-border bg-muted/30 object-contain" alt="favicon" />
+                <span v-else class="text-xs text-muted-foreground">-</span>
               </TableCell>
               <TableCell class="px-6 py-4 text-sm text-muted-foreground">{{ formatDate(item.updated_at) }}</TableCell>
               <TableCell class="px-6 py-4">
@@ -439,10 +436,14 @@ onMounted(() => {
             <div class="grid gap-3">
               <Label>{{ t('admin.resellerSiteConfigs.fields.siteName') }}</Label>
               <Input v-model="form.site_name" />
-              <Label>{{ t('admin.resellerSiteConfigs.fields.logo') }}</Label>
-              <Input v-model="form.logo" placeholder="/uploads/..." />
-              <Label>{{ t('admin.resellerSiteConfigs.fields.favicon') }}</Label>
-              <Input v-model="form.favicon" placeholder="/uploads/..." />
+              <div class="grid gap-2">
+                <Label>{{ t('admin.resellerSiteConfigs.fields.logo') }}</Label>
+                <MediaPicker v-model="form.logo" scene="reseller" />
+              </div>
+              <div class="grid gap-2">
+                <Label>{{ t('admin.resellerSiteConfigs.fields.favicon') }}</Label>
+                <MediaPicker v-model="form.favicon" scene="reseller" />
+              </div>
             </div>
           </section>
 
@@ -492,7 +493,7 @@ onMounted(() => {
                 <Textarea v-model="form.seo.description[lang]" rows="2" />
               </template>
               <Label>{{ t('admin.resellerSiteConfigs.fields.ogImage') }}</Label>
-              <Input v-model="form.seo.default_og_image" placeholder="/uploads/..." />
+              <MediaPicker v-model="form.seo.default_og_image" scene="reseller" />
             </div>
           </section>
 
