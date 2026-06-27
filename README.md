@@ -1,6 +1,6 @@
-# Dujiao-Next Admin
+# 独角兽商城后台
 
-Dujiao-Next Admin is the management console for operating products, orders, users, payment channels, and system settings.
+Unicorn Store Admin is the management console for operating products, orders, users, payment channels, and system settings.
 
 ## Tech Stack
 
