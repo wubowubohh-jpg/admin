@@ -30,6 +30,3 @@ Build for production:
 npm run build
 ```
 
-## Online Documentation
-
-- https://dujiao-next.com
